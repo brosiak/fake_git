@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="fake_git",
-    version="0.0.5",
+    version="0.0.11",
     url="https://github.com/brosiak/fake_git",
     author="Bartosz Rosiak",
     author_email="rosiakbartosz0@gmail.com",

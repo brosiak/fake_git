@@ -61,16 +61,24 @@ def open_json(file_name):
 def update_json(data, json_file):
     json_file.seek(0)
     json.dump(data, json_file, indent=4)
+    json_file.truncate()
     json_file.close()
 
 
-def fill_json_data():
+def fill_json_new_data():
     os.chdir(GIT_DIR)
     json_obj, json_file = open_json(GIT_JSON_NAME)
     dir_list = os.listdir(REPO_DIR)
     os.chdir(REPO_DIR)
     for file in dir_list:
+        found = False
         if os.path.isdir(file):
+            continue
+        for command_files in json_obj.values():
+            if file in command_files:
+                found = True
+                break
+        if found:
             continue
         file_hash = hash_file(file)
         json_obj[States.NEW].update({file: file_hash})
@@ -141,32 +149,33 @@ def add_files(arg):
     if not check_if_file_exists(GIT_JSON_NAME):
         return
     json_obj, json_file = open_json(GIT_JSON_NAME)
-    if arg == "*":
-        states = [States.NEW, States.MODIFIED]
-        for state in states:
-            files = json_obj.get(state)
-            files = {k: v for k, v in files.items()}
+    states = [States.NEW, States.MODIFIED]
+    found = False
+    for state in states:
+        files = json_obj.get(state)
+        files = {k: v for k, v in files.items()}
+        if arg == "*":
             for file_name, file_hash in files.items():
                 del json_obj[state][file_name]
                 json_obj[States.STAGED].update({file_name: file_hash})
-    else:
-        state = States.NEW
-        files = json_obj.get(state)
-        files = {k: v for k, v in files.items()}
-        if arg not in files:
-            print(f"there is no file named {arg}")
-            return
-        file_hash = files.get(arg)
-        del json_obj[state][arg]
-        json_obj[States.STAGED].update({arg: file_hash})
+        elif arg in files:
+            file_hash = files.get(arg)
+            del json_obj[state][arg]
+            json_obj[States.STAGED].update({arg: file_hash})
+            found = True
+    if not found and arg != "*":
+        print(f"there is no file named {arg}")
+        return
     update_json(json_obj, json_file)
 
 
 def add(arg):
+    fill_json_new_data()
     add_files(arg)
 
 
 def status():
+    fill_json_new_data()
     update_modified_status()
     display_file_statuses()
 
@@ -177,7 +186,7 @@ def init():
         return
     init_repository()
     init_json()
-    fill_json_data()
+    fill_json_new_data()
 
 
 def commit():
