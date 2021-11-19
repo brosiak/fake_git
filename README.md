@@ -17,3 +17,5 @@ $ pip install fake-git
     fake_git commit
     fake_git add <file_name>
 ```
+# Example of usage\
+![Alt text](https://github.com/brosiak/fake_git/blob/master/fake_git%20example.png?raw=true "Example of usage")
