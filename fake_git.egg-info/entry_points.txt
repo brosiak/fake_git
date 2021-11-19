@@ -1,0 +1,3 @@
+[console_scripts]
+fake_git = fake_git.fake_git_main:main
+

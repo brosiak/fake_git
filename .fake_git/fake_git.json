@@ -1,0 +1,15 @@
+{
+    "new": {},
+    "staged": {},
+    "modified": {},
+    "commited": {
+        "pyproject.toml": "579ce9bd2cf56b7542b09976ff16b1d3b24b29f5dd6247d0db84d2366f1b3768",
+        "README.md": "4bef4ce080770687e884ebd1da8f701bb42543978456814f929f5d7bf4b28078",
+        ".gitignore": "5c7d180bfb99740348e745d4424a3cc7e2e0a936b579b89c0747e0d0142e5e3f",
+        "fake_git_main.py": "0171f6c73a03312b76e5c788623be2dd8e0a8d366c8307aab88e7fb9037772af",
+        "__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "fake_git.py": "b05ef8d3cc480635d1150fd655890fc1a490af1807974e4330a57a389093f579",
+        "setup.py": "c18d142f9a245e6bdfb32bec2bf26d25e1844ea084925858b2225734133478a5"
+    }
+} }
+}
