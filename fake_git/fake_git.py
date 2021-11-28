@@ -61,8 +61,6 @@ def update_json(data, json_file):
 
 def fill_json_new_data():
     os.chdir(GIT_DIR)
-    if not check_if_file_exists(GIT_JSON_NAME):
-        return
     json_obj, json_file = open_json(GIT_JSON_NAME)
     dir_list = os.listdir(REPO_DIR)
     os.chdir(REPO_DIR)
@@ -88,10 +86,16 @@ def check_if_file_exists(file_name):
     return True
 
 
+def check_if_git_exists():
+    if check_if_file_exists(GIT_DIR):
+        os.chdir(GIT_DIR)
+        if check_if_file_exists(GIT_JSON_NAME):
+            return True
+    return False
+
+
 def update_modified_status():
     os.chdir(GIT_DIR)
-    if not check_if_file_exists(GIT_JSON_NAME):
-        return
     json_obj, json_file = open_json(GIT_JSON_NAME)
     dir_list = os.listdir(REPO_DIR)
     os.chdir(REPO_DIR)
@@ -115,8 +119,6 @@ def update_modified_status():
 
 def display_file_statuses():
     os.chdir(GIT_DIR)
-    if not check_if_file_exists(GIT_JSON_NAME):
-        return
     json_obj, json_file = open_json(GIT_JSON_NAME)
     if States.COMMITED in json_obj:
         del json_obj[States.COMMITED]
@@ -128,8 +130,6 @@ def display_file_statuses():
 
 def commit_files():
     os.chdir(GIT_DIR)
-    if not check_if_file_exists(GIT_JSON_NAME):
-        return
     json_obj, json_file = open_json(GIT_JSON_NAME)
     state = States.STAGED
     files = json_obj.get(state)
@@ -142,8 +142,6 @@ def commit_files():
 
 def add_files(arg):
     os.chdir(GIT_DIR)
-    if not check_if_file_exists(GIT_JSON_NAME):
-        return
     json_obj, json_file = open_json(GIT_JSON_NAME)
     states = [States.NEW, States.MODIFIED]
     found = False
@@ -166,11 +164,15 @@ def add_files(arg):
 
 
 def add(arg):
+    if not check_if_git_exists():
+        return
     fill_json_new_data()
     add_files(arg)
 
 
 def status():
+    if not check_if_git_exists():
+        return
     fill_json_new_data()
     update_modified_status()
     display_file_statuses()
@@ -186,4 +188,6 @@ def init():
 
 
 def commit():
+    if not check_if_git_exists():
+        return
     commit_files()
