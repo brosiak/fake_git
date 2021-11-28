@@ -1,7 +1,6 @@
 import os
 import json
 import hashlib
-from enum import Enum
 
 
 class States:
@@ -36,11 +35,6 @@ def hash_file(file_name):
     return file_hash.hexdigest()
 
 
-def read_only_json(file_name):
-    with open(file_name, "r") as outfile:
-        return json.load(outfile)
-
-
 def init_json():
     json_obj = json.dumps(INIT_JSON_DICT, indent=4)
     with open(GIT_JSON_NAME, "w") as outfile:
@@ -67,6 +61,8 @@ def update_json(data, json_file):
 
 def fill_json_new_data():
     os.chdir(GIT_DIR)
+    if not check_if_file_exists(GIT_JSON_NAME):
+        return
     json_obj, json_file = open_json(GIT_JSON_NAME)
     dir_list = os.listdir(REPO_DIR)
     os.chdir(REPO_DIR)
